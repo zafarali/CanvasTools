@@ -32,13 +32,27 @@ var SDL = function(ctx){
 			ctx.fill();
 	}
 
+	this.square = function(x,y,side,stroke){
+    	this.rect(x, y, side, side,stroke);   	
+	}
 	//clears the context
 	this.clear = function(){
 		ctx.clearRect(0,0,this.WIDTH,this.HEIGHT)
 	}
 
-	//sets the color
+	//sets the color of both lines and fill
 	this.color = function(colorString){
+		this.lineColor(colorString);
+		this.fillColor(colorString);
+	}
+
+	//sets color of the line
+	this.lineColor = function(colorString){
+		ctx.strokeStyle = colorString;
+	}
+
+	//sets the color of the fill
+	this.fillColor = function(colorString){
 		ctx.fillStyle=colorString;
 	}
 
