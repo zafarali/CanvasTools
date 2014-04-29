@@ -6,6 +6,7 @@ simple text to a context defined object.
 */
 var SDL = function(ctx){
 	
+	//defines the context for this object
 	var ctx = ctx;
 	this.WIDTH = ctx.canvas.getAttribute('width');
 	this.HEIGHT = ctx.canvas.getAttribute('height');
@@ -40,6 +41,12 @@ var SDL = function(ctx){
 		ctx.clearRect(0,0,this.WIDTH,this.HEIGHT)
 	}
 
+	this.stroke = function(){
+		ctx.stroke();
+	}
+	this.fill = function(){
+		ctx.fill();
+	}
 	//sets the color of both lines and fill
 	this.color = function(colorString){
 		this.lineColor(colorString);
@@ -80,4 +87,23 @@ var SDL = function(ctx){
 		else
 			ctx.fill();	
 	}
+}
+
+
+var sdl = {
+	canvas : {
+		context:{
+			get : function(canvasId){
+				var canvas = document.getElementById(canvasId);
+				var context = canvas.getContext('2d');
+				return context;
+			}
+		},
+		create : function(canvasId,width,height,parent){
+		//creates a canvas element and appends it
+	}
+},
+create : function(ctx){
+	return new SDL(ctx);
+}
 }
