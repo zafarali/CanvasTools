@@ -10,11 +10,6 @@ var SDL = function(ctx){
 	this.WIDTH = ctx.canvas.getAttribute('width');
 	this.HEIGHT = ctx.canvas.getAttribute('height');
 
-	this.defaults = {
-		thickness = 2;
-		fill = 'white';
-		color = 'black';
-	}
 
 	this.circle = function(x,y,r,stroke){
 		ctx.beginPath();
@@ -43,28 +38,32 @@ var SDL = function(ctx){
 	}
 
 	//sets the color
-	this.setColor = function(colorString){
+	this.color = function(colorString){
 		ctx.fillStyle=colorString;
 	}
 
 	//adds text
-	this.text = function(text, x, y, size,fontWeight){
-		if(typeof(size)=="undefined") size = "12px";
-		if(typeof(fontWeight)=='undefined') fontWeight = "";
-		ctx.font= size+" "+fontWeight;
+	this.text = function(text, x, y, size, font, weight){
+		if(typeof(size)=="undefined" || size==" " || size=="") size = "12px";
+		if(typeof(font)=='undefined' || font=="" || font==" ") font = "Arial";
+		if(typeof(weight)=='undefined' || weight=="" || weight==" ") weight = "bold";
+		ctx.font= weight+" "+size+" "+font;
 		ctx.fillText(text,x,y);
 	}
-	this.triangle = function(context, centerX, centerY, side1, side2, side3, height){
+	this.triangle = function(centerX, centerY, side1, side2, side3, height, stroke){
 		side2 = side1; side3 = side1;
 		if(typeof(height)=='undefined') height = Math.sqrt((side1 * side1) - ((side1 / side1) * (side1 / side1)));
 
-		context.beginPath();
-		context.moveTo(centerX, centerY);
-		context.lineTo(centerX+(side1/2), centerY + (height));
-		context.lineTo(centerX+side1, centerY);
-		context.lineTo(centerX, centerY);
-		context.lineJoin = 'miter';
-		context.closePath();
-		context.fill();
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(centerX+(side1/2), centerY + (height));
+		ctx.lineTo(centerX+side1, centerY);
+		ctx.lineTo(centerX, centerY);
+		ctx.lineJoin = 'miter';
+		ctx.closePath();
+		if(stroke)
+			ctx.stroke();
+		else
+			ctx.fill();	
 	}
 }
