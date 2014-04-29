@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+	<script src="SDL.js">
+	</script>
+	<script>
+	window.onload = function(){
+	var c = sdl.create(sdl.canvas.context.get("test"));
+	c.circle(10,10,5);
+	c.circle(20,20,5,true);
+	c.triangle(30,30,20,20,20,20);
+	c.rect(50,50,20,100);
+	c.color("red");
+	c.text("hi", 80, 80, "30px", "sans-serif", "italic");
+	c.square(100,100,50,true);
+	c.color("blue");
+	c.fill();
+	c.color("yellow");
+	c.text("X", 120,120)
+	c.color("red");
+	c.stroke();
+	}
+	</script>
+</head>
+<body></body>
+<canvas id="test" width="500" height="500"></canvas>
+</html>
