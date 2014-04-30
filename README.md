@@ -7,8 +7,10 @@ v0.2
 - SDLpoint and sdl.point sublibrary
 - sdl.extend() function to create new modules and sublibraries
 - added SDLmanipulator.defaults so that defaults can be easily changed
+- added abillity to chain methods
 
-**todo**
+
+*todo*
 - streamline SDLmanipulator.traingle()
 
 

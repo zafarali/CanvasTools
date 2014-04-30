@@ -38,21 +38,27 @@ var SDLmanipulator = function(context){
 			ctx.stroke();
 		else
 			ctx.fill();
+		return this;
 	};
 
 	//draws a single point (useful for graphing)
 	this.point = function(location, withtext, fontsize){
 		this.circle(location,sdl.point.defaults.pointsize,false);
 		if(withtext){
-			if(typeof(location.z)=='undefined')
-				st = "("+location.x+", "+location.y+")";
-			else
-				st = "("+location.x+", "+location.y+", "+location.z+")";
+			if(typeof(location.label)=='undefined'){
+				if(typeof(location.z)=='undefined')
+					st = "("+location.x+", "+location.y+")";
+				else
+					st = "("+location.x+", "+location.y+", "+location.z+")";
+			}else{
+				st = location.label;
+			}
 			ctx.textBaseline="top";
 			if(typeof(fontsize)=='undefined' || fontsize ==" " || fontsize=="") fontsize=sdl.point.defaults.fontsize;
 			this.text(st,location,fontsize);
 			ctx.textBaseline="alphabetic";
 		}
+		return this;
 	};
 
 	//draws a rectange
@@ -64,26 +70,31 @@ var SDLmanipulator = function(context){
 			ctx.stroke();
 		else
 			ctx.fill();
+		return this;
 	};
 
 	//draws a square
 	this.square = function(location, side, stroke){
     	this.rect(location, side, side, stroke);   	
+    	return this;
 	};
 
 	//clears the context
 	this.clear = function(){
-		ctx.clearRect(0,0,this.WIDTH,this.HEIGHT)
+		ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
+		return this;
 	};
 
 	//strokes the path
 	this.stroke = function(){
 		ctx.stroke();
+		return this;
 	};
 
 	//fills the object/path
 	this.fill = function(){
 		ctx.fill();
+		return this;
 	};
 
 
@@ -91,16 +102,19 @@ var SDLmanipulator = function(context){
 	this.color = function(colorString){
 		this.lineColor(colorString);
 		this.fillColor(colorString);
+		return this;
 	};
 
 	//sets color of the line
 	this.lineColor = function(colorString){
 		ctx.strokeStyle = colorString;
+		return this;
 	};
 
 	//sets the color of the fill
 	this.fillColor = function(colorString){
 		ctx.fillStyle=colorString;
+		return this;
 	};
 
 	//draws text
@@ -110,6 +124,7 @@ var SDLmanipulator = function(context){
 		if(typeof(weight)=='undefined' || weight=="" || weight==" ") weight = this.defaults.weight;
 		ctx.font= weight+" "+size+" "+font;
 		ctx.fillText(text,location.x,location.y);
+		return this;
 	};
 
 	//draws a triangle
@@ -128,6 +143,7 @@ var SDLmanipulator = function(context){
 			ctx.stroke();
 		else
 			ctx.fill();	
+		return this;
 	};
 };
 
@@ -185,6 +201,10 @@ var SDLpoint = function(x,y,z){
 	}
 	sdl.point.points.push(this);
 	const desc = "SDLpoint";
+	this.setLabel = function(label){
+		this.label=label;
+		return this;
+	}
 };
 
 sdl.extend("point", {
@@ -208,6 +228,7 @@ sdl.extend("point", {
 	//pushes an arbitriary point to be tracked by the sdl.point class
 	push:function(newpoint){
 		sdl.point.points.push(newpoint);
+		return this;
 	}
 });
 

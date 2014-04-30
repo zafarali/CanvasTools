@@ -1,24 +1,23 @@
 <!doctype html>
 <html>
 <head>
-	<script src="SDL.js">
-	</script>
+	<script src="SDL.js"></script>
 	<script>
 	window.onload = function(){
 	var c = sdl.create(sdl.canvas.context.get("test"));
-	c.circle(10,10,5);
-	c.circle(20,20,5,true);
-	c.triangle(30,30,20,20,20,20);
-	c.rect(50,50,20,100);
+	c.circle({x:10,y:10},5);
+	c.circle({x:20,y:20},5,true);
+	c.triangle({x:30,y:30},20,20,20,20);
+	c.rect({x:50,y:50},20,100);
 	c.color("red");
-	c.text("hi", 80, 80, "30px", "sans-serif", "italic");
-	c.square(100,100,50,true);
-	c.color("blue");
-	c.fill();
-	c.color("yellow");
-	c.text("X", 120,120)
-	c.color("red");
-	c.stroke();
+	c.text("hello world", {x:80,y:80}, "30px", "sans-serif", "italic");
+	c.square({x:100,y:100},50,true);
+	c.color("blue").fill();
+	c.color("red").point({x:140,y:140},true,"9px");
+	c.color("yellow").text("X", sdl.newPoint(120,120));
+	c.color("black");
+	c.point(sdl.newPoint(150,30).setLabel("data label!"),true);
+	console.log(sdl.point.push({x:5,y:6}).get());
 	}
 	</script>
 </head>
