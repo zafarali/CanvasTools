@@ -1,9 +1,9 @@
 =====
 # SDL.js - Simple Drawing Library (beta stream)#
 
-v0.2 
+##v0.2 ##
 
-- modularized and extendable sdl object
+- modularized and extendable sdl object (Issue #1)
 - SDLpoint and sdl.point sublibrary
 - sdl.extend() function to create new modules and sublibraries
 - added SDLmanipulator.defaults so that defaults can be easily changed
@@ -16,8 +16,12 @@ v0.2
 - canvas gradient manipulator
 - canvas element creator + appender
 - abillity to manipulate thickness/type of line
+- abillity to draw lines
+- abillity to move the pen
+- abillity to rotate shapes
 
-v0.1
+
+##v0.1##
 
 - basic shapes drawing
 - text adding
