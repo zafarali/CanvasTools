@@ -13,11 +13,16 @@
 	c.text("hello world", {x:80,y:80}, "30px", "sans-serif", "italic");
 	c.square({x:100,y:100},50,true);
 	c.color("blue").fill();
-	c.color("red").point({x:140,y:140},true,"9px");
+	c.color("red").point({x:150,y:50},true,"9px");
 	c.color("yellow").text("X", sdl.newPoint(120,120));
 	c.color("black");
+
 	c.point(sdl.newPoint(150,30).setLabel("data label!"),true);
 	console.log(sdl.point.push({x:5,y:6}).get());
+	sgreen = sdl.color.create("supergreen", "#2ECC71");
+	topaz = sdl.color.topaz;
+	c.color(sgreen).text("im emerald!", {x:200,y:200}, "19px");
+	c.color(topaz).triangle({x:220,y:220},30,30,30,30);
 	}
 	</script>
 </head>

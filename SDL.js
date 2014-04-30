@@ -107,13 +107,19 @@ var SDLmanipulator = function(context){
 
 	//sets color of the line
 	this.lineColor = function(colorString){
-		ctx.strokeStyle = colorString;
+		if(typeof(colorString.rep)=='undefined') 
+			ctx.strokeStyle = colorString;
+		else
+			ctx.strokeStyle = colorString.rep;
 		return this;
 	};
 
 	//sets the color of the fill
 	this.fillColor = function(colorString){
-		ctx.fillStyle=colorString;
+		if(typeof(colorString.rep)=='undefined') 
+			ctx.fillStyle=colorString;
+		else
+			ctx.fillStyle=colorString.rep;
 		return this;
 	};
 
@@ -161,6 +167,7 @@ canvas : {
 		},
 		create : function(canvasId,width,height,parent){
 		//creates a canvas element and appends it
+		return "not implemented";
 	}
 },
 
@@ -235,4 +242,26 @@ sdl.extend("point", {
 //short hand to create new points
 sdl.extend("newPoint", function(x,y,z){
 	return sdl.point.create(x,y,z);
+});
+
+//the color library
+//made to easily create colors and gradients
+var SDLcolor = function(colorname,colorstring){
+	this.name = colorname;
+	this.rep = colorstring;
+}
+sdl.extend("color",{
+	create:function(colorname, colorstring){
+		return new SDLcolor(colorname,colorstring);
+	},
+	gradient:function(){
+		return "not implemented";
+	},
+
+	//predefined color library
+	emerald: new SDLcolor("emerald", "#2ECC71"),
+	amethyst: new SDLcolor("amethyst", "#9B59B6"),
+	topaz: new SDLcolor("topaz", "#F1C40F"),
+	garnet: new SDLcolor("garnet","#C0392B"),
+	silver: new SDLcolor("silver", "#BDC3C7")
 });
