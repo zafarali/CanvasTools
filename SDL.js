@@ -6,6 +6,9 @@ simple text to a context defined object.
 Library works by using 'point' objects ({x:int,y:int})
 to define locations of different elements, this allows
 us to use other objects which have x,y properties (eg: game characters)
+
+VERSION:0.2.2 (beta)
+
 */
 var SDLmanipulator = function(context){
 	
@@ -17,8 +20,17 @@ var SDLmanipulator = function(context){
 	//object description
 	const desc = "SDLobj";
 
+	//default values
+	this.defaults = {
+		color:"black",
+		fontfamily:"Arial",
+		fontsize:"12px",
+		weight:"bold"
+	};
+
+
 	//draws a circle
-	this.circle = function(location,r,stroke){
+	this.circle = function(location, r, stroke){
 		ctx.beginPath();
 		ctx.arc(location.x,location.y,r,0,Math.PI*2,true);
 		ctx.closePath();
@@ -29,22 +41,22 @@ var SDLmanipulator = function(context){
 	};
 
 	//draws a single point (useful for graphing)
-	this.point = function(location,withtext,fontsize){
-		this.circle(location,2,false);
+	this.point = function(location, withtext, fontsize){
+		this.circle(location,sdl.point.defaults.pointsize,false);
 		if(withtext){
 			if(typeof(location.z)=='undefined')
 				st = "("+location.x+", "+location.y+")";
 			else
 				st = "("+location.x+", "+location.y+", "+location.z+")";
 			ctx.textBaseline="top";
-			if(typeof(fontsize)=='undefined' || fontsize ==" " || fontsize=="") fontsize="9px";
+			if(typeof(fontsize)=='undefined' || fontsize ==" " || fontsize=="") fontsize=sdl.point.defaults.fontsize;
 			this.text(st,location,fontsize);
 			ctx.textBaseline="alphabetic";
 		}
 	};
 
 	//draws a rectange
-	this.rect = function(location,w,h,stroke){
+	this.rect = function(location, w, h, stroke){
 		ctx.beginPath();
 		ctx.rect(location.x,location.y,w,h);
 		ctx.closePath();
@@ -55,7 +67,7 @@ var SDLmanipulator = function(context){
 	};
 
 	//draws a square
-	this.square = function(location,side,stroke){
+	this.square = function(location, side, stroke){
     	this.rect(location, side, side, stroke);   	
 	};
 
@@ -93,9 +105,9 @@ var SDLmanipulator = function(context){
 
 	//draws text
 	this.text = function(text, location, size, font, weight){
-		if(typeof(size)=="undefined" || size==" " || size=="") size = "12px";
-		if(typeof(font)=='undefined' || font=="" || font==" ") font = "Arial";
-		if(typeof(weight)=='undefined' || weight=="" || weight==" ") weight = "bold";
+		if(typeof(size)=="undefined" || size==" " || size=="") size = this.defaults.fontsize;
+		if(typeof(font)=='undefined' || font=="" || font==" ") font = this.defaults.fontfamily;
+		if(typeof(weight)=='undefined' || weight=="" || weight==" ") weight = this.defaults.weight;
 		ctx.font= weight+" "+size+" "+font;
 		ctx.fillText(text,location.x,location.y);
 	};
@@ -121,10 +133,9 @@ var SDLmanipulator = function(context){
 
 var sdl = {
 
-//the canvas library
+//the canvas sublibrary
 canvas : {
 		context:{
-
 			//gets the context of canvasId
 			get : function(canvasId){
 				var canvas = document.getElementById(canvasId);
@@ -148,7 +159,7 @@ getContext : function(canvasId){
 },
 
 //extends the sdl library with a new sublibrary or function
-extend : function(lib_or_func_name,object_or_func){
+extend : function(lib_or_func_name, object_or_func){
 	if(typeof(object_or_func)!='undefined' && (object_or_func !='' && object_or_func!=' ' && lib_or_func_name!='' && lib_or_func_name !=' '))
 		sdl[lib_or_func_name] = object_or_func;
 }
@@ -180,13 +191,24 @@ sdl.extend("point", {
 	create:function(x,y,z){
 		return new SDLpoint(x,y,z);
 	},
-	//stores all creates points
+	//stores all created SDLpoints
 	points:[],
+
+	//default values
+	defaults:{
+		pointsize:2,
+		fontsize:"9px"
+	},
 
 	//returns all created points
 	get:function(){
 		return sdl.point.points;
 	},
+
+	//pushes an arbitriary point to be tracked by the sdl.point class
+	push:function(newpoint){
+		sdl.point.points.push(newpoint);
+	}
 });
 
 //short hand to create new points
