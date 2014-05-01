@@ -1,13 +1,14 @@
 /*
 simple drawing library (SDL.js)
 Playing around with object oriented library creation
-this is library lets us draw simple shapes and add
+this library lets us draw simple shapes and add
 simple text to a context defined object.
-Library works by using 'point' objects ({x:int,y:int})
+
+Library works by using 'point' objects {x:int,y:int}
 to define locations of different elements, this allows
 us to use other objects which have x,y properties (eg: game characters)
 
-VERSION:0.2.2 (beta)
+VERSION: 0.2.0 (beta:01)
 
 */
 var SDLmanipulator = function(context){
@@ -25,7 +26,9 @@ var SDLmanipulator = function(context){
 		color:"black",
 		fontfamily:"Arial",
 		fontsize:"12px",
-		weight:"bold"
+		weight:"bold",
+		linewidth:1,
+		join:"miter"
 	};
 
 
@@ -97,7 +100,6 @@ var SDLmanipulator = function(context){
 		return this;
 	};
 
-
 	//sets the color of both line and fill
 	this.color = function(colorString){
 		this.lineColor(colorString);
@@ -151,6 +153,37 @@ var SDLmanipulator = function(context){
 			ctx.fill();	
 		return this;
 	};
+
+
+	this.start=function(){
+		ctx.lineWidth = this.defaults.linewidth;
+		ctx.beginPath();
+		return this;
+	};
+	this.end=function(){
+		ctx.lineJoin=this.defaults.join;
+		ctx.closePath();
+		return this;
+	};
+
+	this.to = function(to){
+		ctx.lineTo(to.x,to.y);
+		return this;
+	};
+	this.from = function(from){
+		ctx.moveTo(from.x,from.y);
+		return this;
+	};
+	this.line = function(from,to){
+		ctx.lineWidth = this.defaults.linewidth;
+		ctx.moveTo(from.x,from.y);
+		ctx.lineTo(to.x,to.y);
+		return this;
+	};
+	this.thickness = function(val){
+		ctx.lineWidth=val;
+		return this;
+	}
 };
 
 var sdl = {
@@ -181,6 +214,10 @@ getContext : function(canvasId){
 	return this.canvas.context.get(canvasId);
 },
 
+animate:function(){
+
+},
+
 //extends the sdl library with a new sublibrary or function
 extend : function(lib_or_func_name, object_or_func){
 	if(typeof(object_or_func)!='undefined' && (object_or_func !='' && object_or_func!=' ' && lib_or_func_name!='' && lib_or_func_name !=' '))
@@ -198,6 +235,7 @@ C O R E   E X T E N S I O N S
 //made to easily create and store points
 
 var SDLpoint = function(x,y,z){
+	const desc = "SDLpoint";
 	this.x = x;
 	this.y = y;
 	if(typeof(z)=='undefined'){
@@ -207,7 +245,6 @@ var SDLpoint = function(x,y,z){
 		this.dimension = 3;
 	}
 	sdl.point.points.push(this);
-	const desc = "SDLpoint";
 	this.setLabel = function(label){
 		this.label=label;
 		return this;
@@ -247,15 +284,13 @@ sdl.extend("newPoint", function(x,y,z){
 //the color library
 //made to easily create colors and gradients
 var SDLcolor = function(colorname,colorstring){
+	const desc = "SDLcolor";
 	this.name = colorname;
 	this.rep = colorstring;
 }
 sdl.extend("color",{
 	create:function(colorname, colorstring){
 		return new SDLcolor(colorname,colorstring);
-	},
-	gradient:function(){
-		return "not implemented";
 	},
 
 	//predefined color library

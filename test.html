@@ -5,12 +5,14 @@
 	<script>
 	window.onload = function(){
 	var c = sdl.create(sdl.canvas.context.get("test"));
-	c.circle({x:10,y:10},5);
-	c.circle({x:20,y:20},5,true);
-	c.triangle({x:30,y:30},20,20,20,20);
-	c.rect({x:50,y:50},20,100);
-	c.color("red");
-	c.text("hello world", {x:80,y:80}, "30px", "sans-serif", "italic");
+	c.circle({x:10,y:10},5)
+	 .circle({x:20,y:20},5,true)
+	 .triangle({x:30,y:30},20,20,20,20)
+	 .rect({x:50,y:50},20,100)
+	 .color("red")
+	 .text("hello world", {x:80,y:80}, "30px", "sans-serif", "italic");
+	
+
 	c.square({x:100,y:100},50,true);
 	c.color("blue").fill();
 	c.color("red").point({x:150,y:50},true,"9px");
@@ -23,6 +25,20 @@
 	topaz = sdl.color.topaz;
 	c.color(sgreen).text("im emerald!", {x:200,y:200}, "19px");
 	c.color(topaz).triangle({x:220,y:220},30,30,30,30);
+	c.color(sdl.color.garnet);
+
+	c.start()
+	 .line({x:1,y:1},{x:300,y:300})
+	 .end()
+	 .stroke();
+
+	c.start()
+	 .from({x:400,y:1})
+	 .to({x:325,y:100})
+	 .thickness(4)
+	 .to({x:325,y:50})
+	 .stroke();
+
 	}
 	</script>
 </head>

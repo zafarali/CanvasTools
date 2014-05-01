@@ -1,7 +1,7 @@
 =====
 # SDL.js - Simple Drawing Library (beta stream)#
 
-##v0.2 ##
+###v0.2b (dev)###
 
 - modularized and extendable sdl object (Issue #1)
 - SDLpoint and sdl.point sublibrary
@@ -10,18 +10,18 @@
 - added abillity to chain methods
 - added superior color handling, custom color creators
 - added some predifined "gem" colors
+- abillity to draw lines
+- abillity to move the pen
 
 *todo*
 - streamline SDLmanipulator.traingle()  (Issue #2)
-- canvas gradient manipulator
+- canvas gradient manipulator (Issue #3)
 - canvas element creator + appender
-- abillity to manipulate thickness/type of line
-- abillity to draw lines
-- abillity to move the pen
+- abillity to manipulate ~thickness~/type of line
 - abillity to rotate shapes
+- support for shadows
 
-
-##v0.1##
+###v0.1###
 
 - basic shapes drawing
 - text adding
