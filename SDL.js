@@ -8,7 +8,7 @@ Library works by using 'point' objects {x:int,y:int}
 to define locations of different elements, this allows
 us to use other objects which have x,y properties (eg: game characters)
 
-VERSION: 0.2.0 (beta:01)
+VERSION: 0.2.0 (beta:03)
 
 */
 var SDLmanipulator = function(context){
@@ -28,7 +28,8 @@ var SDLmanipulator = function(context){
 		fontsize:"12px",
 		weight:"bold",
 		linewidth:1,
-		join:"miter"
+		join:"miter",
+		dash:[5]
 	};
 
 
@@ -37,6 +38,10 @@ var SDLmanipulator = function(context){
 		ctx.beginPath();
 		ctx.arc(location.x,location.y,r,0,Math.PI*2,true);
 		ctx.closePath();
+		new SDLshape("circle",
+			{x:location.x,
+			y:location.y,
+			r:r});
 		if(stroke)
 			ctx.stroke();
 		else
@@ -73,6 +78,11 @@ var SDLmanipulator = function(context){
 			ctx.stroke();
 		else
 			ctx.fill();
+		new SDLshape("rect",
+			{x:location.x,
+			y:location.y,
+			w:w,
+			h:h});
 		return this;
 	};
 
@@ -132,6 +142,7 @@ var SDLmanipulator = function(context){
 		if(typeof(weight)=='undefined' || weight=="" || weight==" ") weight = this.defaults.weight;
 		ctx.font= weight+" "+size+" "+font;
 		ctx.fillText(text,location.x,location.y);
+		new SDLshape("text",{x:location.x,y:location.y,h:size});
 		return this;
 	};
 
@@ -151,10 +162,12 @@ var SDLmanipulator = function(context){
 			ctx.stroke();
 		else
 			ctx.fill();	
+		
+		new SDLshape("triangle",{x:location.x,y:location.y,h:height});
 		return this;
 	};
 
-
+	//starting and ending
 	this.start=function(){
 		ctx.lineWidth = this.defaults.linewidth;
 		ctx.beginPath();
@@ -166,6 +179,7 @@ var SDLmanipulator = function(context){
 		return this;
 	};
 
+	//drawing paths
 	this.to = function(to){
 		ctx.lineTo(to.x,to.y);
 		return this;
@@ -180,10 +194,27 @@ var SDLmanipulator = function(context){
 		ctx.lineTo(to.x,to.y);
 		return this;
 	};
+
+	//setting line thickness
 	this.thickness = function(val){
 		ctx.lineWidth=val;
 		return this;
+	};
+
+	//setting dashes
+	this.dash = function(dash){
+		if(typeof(dash)=='undefined') dash = this.defaults.dash;
+		ctx.setLineDash(dash);
+		return this;
+	};
+	this.undash = function(){
+		ctx.setLineDash([0]);
+		return this;
+	};
+	this.saveFile = function(){
+		return ctx.canvas.toDataURL();
 	}
+	sdl.list.push(this);
 };
 
 var sdl = {
@@ -196,18 +227,25 @@ canvas : {
 				var canvas = document.getElementById(canvasId);
 				var context = canvas.getContext('2d');
 				return context;
-			}
+			},
 		},
 		create : function(canvasId,width,height,parent){
 		//creates a canvas element and appends it
 		return "not implemented";
-	}
+		},
+
+		save:function(canvasId){
+			return document.getElementById(canvasId).toDataURL();
+		}
 },
 
 //creates an SDL manipulator object
 create : function(ctx){
 	return new SDLmanipulator(ctx);
 },
+
+//stores a list of SDLmanipulators
+list:[],
 
 //shorthand for getting the context of a canvas
 getContext : function(canvasId){
@@ -244,7 +282,7 @@ var SDLpoint = function(x,y,z){
 		this.z = z;
 		this.dimension = 3;
 	}
-	sdl.point.points.push(this);
+	sdl.point.list.push(this);
 	this.setLabel = function(label){
 		this.label=label;
 		return this;
@@ -256,8 +294,8 @@ sdl.extend("point", {
 		return new SDLpoint(x,y,z);
 	},
 	//stores all created SDLpoints
-	points:[],
-
+	list:[],
+	
 	//default values
 	defaults:{
 		pointsize:2,
@@ -266,14 +304,14 @@ sdl.extend("point", {
 
 	//returns all created points
 	get:function(){
-		return sdl.point.points;
+		return sdl.point.list;
 	},
 
 	//pushes an arbitriary point to be tracked by the sdl.point class
 	push:function(newpoint){
-		sdl.point.points.push(newpoint);
+		sdl.point.list.push(newpoint);
 		return this;
-	}
+	},
 });
 
 //short hand to create new points
@@ -299,4 +337,36 @@ sdl.extend("color",{
 	topaz: new SDLcolor("topaz", "#F1C40F"),
 	garnet: new SDLcolor("garnet","#C0392B"),
 	silver: new SDLcolor("silver", "#BDC3C7")
+});
+
+//the shape library
+//made to keep track of shapes
+var SDLshape = function(name, properties,other){
+	const desc = "SDLshape";
+	var props = sdl.shape.priv.props;
+	var i = props.length;
+	while(i--){
+		this[props[i]]=properties[props[i]];
+	}
+	this.name = name;
+	if(typeof(other)!='undefined') this.other = other;
+	sdl.shape.list.push(this);
+}
+
+sdl.extend("shape",{
+	create: function(name, properties){
+		return new SDLshape(name,properties);
+	},
+
+	list:[],//list of shapes being tracked
+
+	priv:{//properties common to most if not all shapes
+		props: ["x","y","h","w","r","z"]
+	},
+	get:function(){
+		return sdl.shape.list;
+	},
+	track:function(object){//adds a shape to be tracked
+		sdl.shape.list.push(object);
+	}
 });

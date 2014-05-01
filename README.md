@@ -12,12 +12,13 @@
 - added some predifined "gem" colors
 - abillity to draw lines
 - abillity to move the pen
+- abillity to manipulate thickness/type of line
+- SDLshape objects which keep track of all shapes created
 
 *todo*
 - streamline SDLmanipulator.traingle()  (Issue #2)
 - canvas gradient manipulator (Issue #3)
 - canvas element creator + appender
-- abillity to manipulate ~thickness~/type of line
 - abillity to rotate shapes
 - support for shadows
 
@@ -27,3 +28,5 @@
 - text adding
 
 
+*future todos (maybe?)*
+- interactive canvas with dragging, selecting and possibly resizing
