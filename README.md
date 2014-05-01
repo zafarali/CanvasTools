@@ -21,6 +21,8 @@
 - canvas element creator + appender
 - abillity to rotate shapes
 - support for shadows
+- fix .save() method (Issue #4)
+
 
 ###v0.1###
 
