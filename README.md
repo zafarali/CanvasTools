@@ -32,3 +32,7 @@
 
 *future todos (maybe?)*
 - interactive canvas with dragging, selecting and possibly resizing
+
+
+*future extensions(maybe?)*
+- svg manipulation
